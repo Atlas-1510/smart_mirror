@@ -1,4 +1,5 @@
 import TimeDate from "./TimeDate";
+import Weather from "./Weather";
 
 function App() {
   return (
@@ -6,7 +7,9 @@ function App() {
       <div className="flex flex-col p-10">
         <TimeDate />
       </div>
-      <div className="">RIGHT</div>
+      <div className="flex flex-col p-10">
+        <Weather />
+      </div>
     </main>
   );
 }
