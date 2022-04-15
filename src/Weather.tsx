@@ -6,6 +6,7 @@ const refreshInterval = 1000 * 60 * 5;
 
 interface IntWeather {
   current: any;
+  daily: any;
 }
 
 const Weather = () => {
@@ -30,29 +31,56 @@ const Weather = () => {
     return () => clearInterval(interval);
   }, [fetchedWeather]);
 
+  const getCurrentTemp = () => {
+    return Math.round(fetchedWeather?.current.temp);
+  };
+
+  const getDayHigh = () => {
+    return Math.round(fetchedWeather?.daily[0].temp.max);
+  };
+
+  const getDayLow = () => {
+    return Math.round(fetchedWeather?.daily[0].temp.min);
+  };
+
+  const getFormattedTime = (rawTime: number) => {
+    const date = new Date(rawTime * 1000);
+    console.log(date);
+    const formattedDate = date.toLocaleTimeString([], {
+      hour12: true,
+      hour: "numeric",
+      minute: "numeric",
+    });
+    return formattedDate;
+  };
+
   return (
     <div className=" flex flex-col">
       <div className="  flex justify-center items-center">
         <div>
-          <i className="wi wi-night-sleet text-9xl" />
+          <i
+            className={`wi wi-owm-${fetchedWeather?.current.weather[0].id} text-9xl`}
+          />
         </div>
         <div className="ml-5 flex flex-col items-center">
-          <span className="text-8xl">19°</span>
+          <span className="text-8xl">{getCurrentTemp()}°</span>
           <div className="flex">
-            <span className="text-4xl m-4">25°</span>
-            <span className="text-4xl m-4 font-thin">9°</span>
+            <span className="text-4xl m-4">{getDayHigh()}°</span>
+            <span className="text-4xl m-4 font-thin">{getDayLow()}°</span>
           </div>
         </div>
       </div>
-      <span className=" text-5xl my-5">Light rain</span>
+      <span className=" text-5xl my-5">
+        {fetchedWeather?.current.weather[0].description}
+      </span>
       <div className=" text-3xl">
         <span>
           <i className="wi wi-sunrise"></i>
-          <span>6:35 am</span>
+          <span>{getFormattedTime(fetchedWeather?.current.sunrise)}</span>
         </span>
         <span className="ml-5">
           <i className="wi wi-sunset"></i>
-          <span>6:32 pm</span>
+          <span>{getFormattedTime(fetchedWeather?.current.sunset)}</span>
         </span>
       </div>
 
@@ -60,7 +88,7 @@ const Weather = () => {
         <div className="w-full bg-purple-300 flex items-center">
           <span className="w-[30%] bg-red-300">Sat</span>
           <i className="w-[30%] bg-blue-300 wi wi-night-sleet" />
-          <span className="w-[20%] bg-rose-500">25</span>
+          <span className="w-[20%] bg-rose-500">16</span>
           <span className="w-[20%] bg-orange-300">9</span>
         </div>
         <div className="w-full bg-purple-300 flex items-center">
