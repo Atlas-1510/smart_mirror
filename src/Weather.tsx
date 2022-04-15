@@ -57,7 +57,7 @@ const Weather = () => {
 
   const generateForecastRow = (forecast: any) => {
     return (
-      <div className="w-full flex items-center">
+      <div key={JSON.stringify(forecast)} className="w-full flex items-center">
         <span className="w-[30%] ">{getFormattedDay(forecast.dt)}</span>
         <i
           className={`w-[30%] text-5xl  wi wi-owm-${forecast.weather[0].id}`}
