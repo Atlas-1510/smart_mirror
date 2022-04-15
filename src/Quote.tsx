@@ -2,52 +2,41 @@ import React, { useEffect, useState } from "react";
 
 interface IntQuote {
   author: string;
-  text: string;
+  content: string;
 }
 
-const randomize = (array: any[]): any[] => {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-};
-
 const Quote = () => {
-  const [quotes, setQuotes] = useState<IntQuote[] | null>(null);
-  const [quoteIndex, setQuoteIndex] = useState(0);
+  const [quote, setQuote] = useState<IntQuote | null>(null);
+
+  const fetchQuote = async () => {
+    const response = await fetch(
+      "https://api.quotable.io/random?tags=inspirational|life|success|wisdom|proverb"
+    );
+    const data = await response.json();
+
+    setQuote(data);
+  };
 
   useEffect(() => {
-    const fetchQuote = async () => {
-      const response = await fetch("https://type.fit/api/quotes");
-      const data = await response.json();
-
-      const randomizedData = randomize(data);
-      setQuotes(randomizedData);
-    };
-    fetchQuote();
+    (async () => await fetchQuote())();
   }, []);
 
   useEffect(() => {
-    const interval = setTimeout(() => {
-      if (quoteIndex < 1642) {
-        setQuoteIndex(quoteIndex + 1);
-      } else {
-        setQuoteIndex(0);
-      }
+    const interval = setTimeout(async () => {
+      await fetchQuote();
     }, 1000 * 60 * 5);
     return () => clearInterval(interval);
-  }, [quoteIndex]);
+  }, [quote]);
+
+  if (!quote) {
+    return null;
+  }
 
   return (
     <div className=" flex flex-col justify-center items-center p-16">
-      <span className=" text-4xl text-center px-10">
-        {quotes ? quotes[quoteIndex].text : null}
-      </span>
+      <span className=" text-4xl text-center px-10">{quote.content}</span>
       <div className="mt-5">
-        <span className="text-3xl">
-          {quotes ? quotes[quoteIndex].author : null}
-        </span>
+        <span className="text-3xl">{quote.author}</span>
       </div>
     </div>
   );
