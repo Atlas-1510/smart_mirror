@@ -5,3 +5,5 @@ Things to include:
 - Time and date
 
 - Motivational quote
+
+- erik flower weather-icons
