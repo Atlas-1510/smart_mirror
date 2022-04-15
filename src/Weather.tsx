@@ -17,8 +17,6 @@ const Weather = () => {
       `https://api.openweathermap.org/data/2.5/onecall?lat=${process.env.REACT_APP_LATITUDE}&lon=${process.env.REACT_APP_LONGITUDE}&appid=${process.env.REACT_APP_API_KEY}&units=metric&exclude=hourly,alerts,minutely`
     );
     const data = await response.json();
-
-    console.log(data);
     setFetchedWeather(data);
   };
 
@@ -41,7 +39,6 @@ const Weather = () => {
 
   const getFormattedTime = (rawTime: number) => {
     const date = new Date(rawTime * 1000);
-    console.log(date);
     const formattedDate = date.toLocaleTimeString([], {
       hour12: true,
       hour: "numeric",
