@@ -5,6 +5,14 @@ interface IntQuote {
   text: string;
 }
 
+const randomize = (array: any[]): any[] => {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 const Quote = () => {
   const [quotes, setQuotes] = useState<IntQuote[] | null>(null);
   const [quoteIndex, setQuoteIndex] = useState(0);
@@ -13,7 +21,9 @@ const Quote = () => {
     const fetchQuote = async () => {
       const response = await fetch("https://type.fit/api/quotes");
       const data = await response.json();
-      setQuotes(data);
+
+      const randomizedData = randomize(data);
+      setQuotes(randomizedData);
     };
     fetchQuote();
   }, []);
