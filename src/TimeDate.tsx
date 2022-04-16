@@ -13,9 +13,9 @@ const TimeDate = () => {
   const getTimeString = () => {
     return time
       .toLocaleString([], {
-        hour12: true,
         hour: "numeric",
         minute: "numeric",
+        hourCycle: "h12",
       })
       .slice(0, -3);
   };
